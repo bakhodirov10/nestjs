@@ -8,11 +8,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
+import { UpdateBookDto } from './Dto/UpdateBooks.dto';
+import { CreateBookDto } from './Dto/CreateBooks.dto';
 
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
-  BooksService: any;
 
   @Get()
   getProducts() {
@@ -25,19 +26,17 @@ export class BooksController {
   }
 
   @Post()
-  createProduct(@Body() body: any) {
+  createProduct(@Body() body: CreateBookDto) {
     return this.booksService.createBook(body);
   }
 
   @Put(':id')
-  updateBook(@Param('id') id: string, @Body() body: any) {
+  updateBook(@Param('id') id: string, @Body() body: UpdateBookDto) {
     return this.booksService.updateBook(Number(id), body);
   }
 
   @Delete(':id')
   deleteBook(@Param('id') id: string) {
-    return {
-      message: 'Book Successfuly Deleted!!!',
-    };
+    return this.booksService.deleteBook(Number(id));
   }
 }

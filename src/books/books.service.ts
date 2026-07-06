@@ -1,49 +1,41 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateBookDto } from './Dto/CreateBooks.dto';
+import { UpdateBookDto } from './Dto/UpdateBooks.dto';
 
 @Injectable()
-export class BooksService extends PrismaClient implements OnModuleInit {
-  async onModuleInit() {
-    await this.$connect();
-  }
+export class BooksService {
+  constructor(private readonly prisma: PrismaService) {}
 
   async getBooks() {
-    return this.book.findMany();
+    return this.prisma.book.findMany();
   }
 
   async getBook(id: number) {
-    return this.book.findUnique({ where: { id } });
+    return this.prisma.book.findUnique({
+      where: { id },
+    });
   }
 
-  async createBook(data: { title: string; pages: number }) {
-    const book = await this.book.create({ data });
-    return {
-      message: 'Book created',
-      book,
-    };
+  async createBook(body: CreateBookDto) {
+    return this.prisma.book.create({
+      data: body,
+    });
   }
 
-  async updateBook(id: number, data: { title?: string; pages?: number }) {
-    try {
-      const book = await this.book.update({
-        where: { id },
-        data,
-      });
-      return {
-        message: 'Book updated',
-        book,
-      };
-    } catch (error) {
-      return { message: 'Book is not found' };
-    }
+  async updateBook(id: number, body: UpdateBookDto) {
+    return this.prisma.book.update({
+      where: { id },
+      data: body,
+    });
   }
 
   async deleteBook(id: number) {
-    try {
-      await this.book.delete({ where: { id } });
-      return { message: 'Book deleted successfully!' };
-    } catch (error) {
-      return { message: 'Book not found' };
-    }
+    await this.prisma.book.delete({
+      where: { id },
+    });
+    return {
+      message: 'Book Successfuly Deleted!!!',
+    };
   }
 }

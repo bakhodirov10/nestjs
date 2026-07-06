@@ -1,49 +1,38 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateProductDto } from './Dto/CreateProduct.dto';
+import { UpdateProductDto } from './Dto/UpdateProduct.dto';
 
 @Injectable()
-export class ProductsService extends PrismaClient implements OnModuleInit {
-  async onModuleInit() {
-    await this.$connect();
-  }
+export class ProductsService {
+  constructor(private readonly prisma: PrismaService) {}
 
   async getProducts() {
-    return this.product.findMany();
+    return this.prisma.product.findMany();
   }
 
   async getProduct(id: number) {
-    return this.product.findUnique({ where: { id } });
+    return this.prisma.product.findUnique({
+      where: { id },
+    });
   }
 
-  async createProduct(data: { title: string; price: number }) {
-    const product = await this.product.create({ data });
-    return {
-      message: 'Product created',
-      product,
-    };
+  async createProduct(body: CreateProductDto) {
+    return this.prisma.product.create({
+      data: body,
+    });
   }
 
-  async updateProduct(id: number, data: { title?: string; price?: number }) {
-    try {
-      const product = await this.product.update({
-        where: { id },
-        data,
-      });
-      return {
-        message: 'Product updated',
-        product,
-      };
-    } catch (error) {
-      return { message: 'product not found' };
-    }
+  async updateProduct(id: number, body: UpdateProductDto) {
+    return this.prisma.product.update({
+      where: { id },
+      data: body,
+    });
   }
 
   async deleteProduct(id: number) {
-    try {
-      await this.product.delete({ where: { id } });
-      return { message: 'Product deleted successfully!' };
-    } catch (error) {
-      return { message: 'Product not found' };
-    }
+    return this.prisma.product.delete({
+      where: { id },
+    });
   }
 }

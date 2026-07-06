@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config'; // <-- Buni import qiling
+import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { BooksModule } from './books/books.module';
-import { MoviesModule } from './movies/movies.module';
 
 @Module({
-  imports: [ProductsModule, BooksModule, MoviesModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }), // <-- Eng birinchi import shu tursin!
+    UsersModule,
+    ProductsModule,
+    BooksModule,
+  ],
 })
 export class AppModule {}
