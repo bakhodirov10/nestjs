@@ -1,15 +1,15 @@
 import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto } from './Dto/Login.dto';
-import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { RegisterUserDto } from './Dto/register.dto';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
+    private authService: AuthService,
   ) {}
 
   async getusers() {
@@ -43,8 +43,10 @@ export class UsersService {
       },
     });
 
-    const payload = { sub: user.id, email: user.email };
-    const token = await this.jwtService.signAsync(payload);
+    const token = this.authService.generateToken({
+      id: user.id,
+      email: user.email,
+    });
 
     return {
       user: {
@@ -71,8 +73,10 @@ export class UsersService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const payload = { sub: user.id, email: user.email };
-    const token = await this.jwtService.signAsync(payload);
+    const token = this.authService.generateToken({
+      id: user.id,
+      email: user.email,
+    });
 
     return {
       user: {
@@ -89,12 +93,6 @@ export class UsersService {
   async getUser(id: number) {
     return this.prisma.user.findUnique({
       where: { id },
-      select: {
-        id: true,
-        title: true,
-        email: true,
-        age: true,
-      },
     });
   }
 }
