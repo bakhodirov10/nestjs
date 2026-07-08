@@ -19,10 +19,11 @@ model Product {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  title String
-  email String @unique
-  age Int
+  id       Int    @id @default(autoincrement())
+  title    String
+  email    String @unique
+  age      Int
+  password String
 }
 
 model Book {

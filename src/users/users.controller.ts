@@ -8,35 +8,30 @@ import {
   Param,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUserDto } from './Dto/UpdateUser.dto';
-import { CreateUserDto } from './Dto/CreateUser.dto';
+import { LoginDto } from './Dto/Login.dto';
+import { RegisterUserDto } from './Dto/register.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  MoviesService: any;
+
   @Get()
-  getMovies() {
+  getUsers() {
     return this.usersService.getusers();
   }
 
   @Get(':id')
-  getMovie(@Param('id') id: string) {
+  getUser(@Param('id') id: string) {
     return this.usersService.getUser(Number(id));
   }
 
-  @Post()
-  createMovie(@Body() body: CreateUserDto) {
-    return this.usersService.createuser(body);
+  @Post('register')
+  register(@Body() body: RegisterUserDto) {
+    return this.usersService.register(body);
   }
 
-  @Patch(':id')
-  updateMovie(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return this.usersService.updateUser(Number(id), body);
-  }
-
-  @Delete(':id')
-  deleteMovie(@Param('id') id: string) {
-    return this.usersService.deleteUser(Number(id));
+  @Post('login')
+  login(@Body() body: LoginDto) {
+    return this.usersService.login(body);
   }
 }
