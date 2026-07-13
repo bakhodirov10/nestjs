@@ -3,7 +3,7 @@ import { IsEmail, IsInt, IsNotEmpty, IsString, Min, MinLength } from 'class-vali
 export class RegisterUserDto {
   @IsString()
   @IsNotEmpty({ message: "Title bo'sh bo'lishi mumkin emas" })
-  title: string;
+  name: string;
 
   @IsEmail({}, { message: "Noto'g'ri email formati" })
   @IsNotEmpty({ message: "Email kiritish majburiy" })

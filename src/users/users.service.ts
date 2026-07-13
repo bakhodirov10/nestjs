@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto } from './Dto/Login.dto';
 import * as bcrypt from 'bcryptjs';
@@ -16,7 +20,7 @@ export class UsersService {
     return this.prisma.user.findMany({
       select: {
         id: true,
-        title: true,
+        name: true,
         email: true,
         age: true,
       },
@@ -36,7 +40,7 @@ export class UsersService {
 
     const user = await this.prisma.user.create({
       data: {
-        title: body.title,
+        name: body.name,
         email: body.email,
         age: body.age,
         password: hashedPassword,
@@ -51,7 +55,7 @@ export class UsersService {
     return {
       user: {
         id: user.id,
-        title: user.title,
+        name: user.name,
         email: user.email,
         age: user.age,
       },
@@ -77,19 +81,16 @@ export class UsersService {
       id: user.id,
       email: user.email,
     });
+    
+    const { password, ...userWithoutPassword } = user;
 
     return {
-      user: {
-        id: user.id,
-        title: user.title,
-        email: user.email,
-        age: user.age,
-      },
+      message: 'Login successful',
       access_token: token,
+      user: userWithoutPassword,
     };
   }
 
-  
   async getUser(id: number) {
     return this.prisma.user.findUnique({
       where: { id },

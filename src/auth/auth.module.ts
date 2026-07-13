@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
       },
     }),
   ],
+  
   providers: [AuthService],
   exports: [JwtModule, AuthService],
 })
