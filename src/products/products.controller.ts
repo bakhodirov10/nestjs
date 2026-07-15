@@ -9,6 +9,7 @@ import {
   UseGuards,
   UploadedFile,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { UpdateProductDto } from './Dto/UpdateProduct.dto';
@@ -25,8 +26,21 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  getProducts() {
-    return this.productsService.getProducts();
+  getProducts(
+    @Query('search')
+    search?: string,
+    @Query('minPrice')
+    minPrice?: string,
+    @Query('minPrice')
+    maxPrice?: string,
+    @Query('sort')
+    sort?: string,
+    @Query('page')
+    page?: string,
+    @Query('limit')
+    limit?: string,
+  ) {
+    return this.productsService.getProducts(search, minPrice, maxPrice, sort, page, limit);
   }
 
   @Get(':id')
