@@ -27,7 +27,7 @@ export class UsersService {
     });
   }
 
-  async register(body: RegisterUserDto) {
+  async register(body: RegisterUserDto, filename?: string) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: body.email },
     });

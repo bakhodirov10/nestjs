@@ -16,6 +16,7 @@ model Product {
   id Int @id @default(autoincrement())
   title String
   price Float
+  image String?
 }
 
 enum Role {
@@ -29,6 +30,7 @@ model User {
   email    String @unique
   age      Int
   password String
+  image String?
   role Role @default(USER)
 }
 

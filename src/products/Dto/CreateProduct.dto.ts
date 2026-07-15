@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
   IsPositive,
@@ -6,6 +7,7 @@ import {
   Min,
   IsNumber,
   Matches,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateProductDto {
@@ -18,7 +20,12 @@ export class CreateProductDto {
   title!: string;
 
   @IsNumber({}, { message: 'Faqat son qabul qilinadi!' })
+  @Type(() => Number) 
   @Min(1, { message: 'Minimum narx 1 dollar!' })
   @IsPositive({ message: "Narx manfiy son bo'la olmaydi!" })
   price!: number;
+
+  @IsOptional()
+  @IsString()
+  image?: string
 }

@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsNotEmpty, IsString, Min, MinLength } from 'class-validator';
+import { IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Min, MinLength } from 'class-validator';
 
 export class RegisterUserDto {
   @IsString()
@@ -18,4 +18,9 @@ export class RegisterUserDto {
   @IsNotEmpty({ message: "Parol bo'sh bo'lishi mumkin emas" })
   @MinLength(6, { message: "Parol kamida 6 ta belgidan iborat bo'lishi kerak" })
   password: string;
+
+
+  @IsString()
+  @IsOptional()
+  image?: string
 }

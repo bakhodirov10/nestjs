@@ -11,4 +11,8 @@ export class UpdateProductDto {
     @Min(1)
     @Max(100000)
     price?: number;
+
+    @IsOptional()
+    @IsString()
+    image?: string
 }

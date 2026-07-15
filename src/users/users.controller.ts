@@ -4,10 +4,15 @@ import {
   Post,
   Body,
   Param,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { LoginDto } from './Dto/Login.dto';
 import { RegisterUserDto } from './Dto/register.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('users')
 export class UsersController {
@@ -23,9 +28,23 @@ export class UsersController {
     return this.usersService.getUser(Number(id));
   }
 
-  @Post('register')
-  register(@Body() body: RegisterUserDto) {
-    return this.usersService.register(body);
+  @Post()
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const uniqueName = Date.now() + extname(file.originalname);
+          cb(null, uniqueName);
+        },
+      }),
+    }),
+  )
+  register(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: RegisterUserDto,
+  ) {
+    return this.usersService.register(body, file.filename);
   }
 
   @Post('login')
