@@ -16,7 +16,36 @@ export class UsersService {
     private authService: AuthService,
   ) {}
 
-  async getusers() {
+  async getusers(
+    search?: string,
+    minAge?: string,
+    maxAge?: string,
+    sort?: string,
+    page?: string,
+    limit?: string,
+  ) {
+    const currentPage = Number(page) || 1;
+    const take = Number(limit) || 5;
+    const skip = (currentPage - 1) * take;
+
+    const users = await this.prisma.user.findMany({
+      where: {
+        name: {
+          contains: search,
+          mode: 'insensitive'
+        },
+        age: {
+          gte: minAge ? Number(minAge) : undefined,
+          lte: maxAge ? Number(maxAge) : undefined,
+        },
+      },
+      orderBy: {
+        age: sort === 'asc' ? 'asc' : 'desc',
+      },
+      skip,
+      take
+    })
+    
     return this.prisma.user.findMany({
       select: {
         id: true,

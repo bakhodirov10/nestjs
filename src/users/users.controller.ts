@@ -6,6 +6,7 @@ import {
   Param,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { LoginDto } from './Dto/Login.dto';
@@ -19,8 +20,21 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getUsers() {
-    return this.usersService.getusers();
+  getUsers(
+    @Query('search')
+    search?: string,
+    @Query('minAge')
+    minAge?: string,
+    @Query('maxAge')
+    maxAge?: string,
+    @Query('sort')
+    sort?: string,
+    @Query('page')
+    page?: string,
+    @Query('limit')
+    limit?: string
+  ) {
+    return this.usersService.getusers(search, minAge, maxAge, sort, page, limit);
   }
 
   @Get(':id')
