@@ -19,6 +19,8 @@ import { Express } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { GetProductDto } from './Dto/QueryProductDto';
+import { ApiResponse } from '@nestjs/swagger';
 
 @UseGuards(JwtAuthGuard)
 @Controller('products')
@@ -26,21 +28,8 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  getProducts(
-    @Query('search')
-    search?: string,
-    @Query('minPrice')
-    minPrice?: string,
-    @Query('minPrice')
-    maxPrice?: string,
-    @Query('sort')
-    sort?: string,
-    @Query('page')
-    page?: string,
-    @Query('limit')
-    limit?: string,
-  ) {
-    return this.productsService.getProducts(search, minPrice, maxPrice, sort, page, limit);
+  getProducts(@Query() query: GetProductDto) {
+    return this.productsService.getProducts(query);
   }
 
   @Get(':id')
@@ -49,6 +38,11 @@ export class ProductsController {
   }
 
   @Post()
+  @ApiResponse({
+status: 201,
+description: "Product created successfully"
+})
+
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({

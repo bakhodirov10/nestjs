@@ -4,6 +4,8 @@ import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
@@ -11,8 +13,19 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-    })
+    }),
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('NestJS Course API')
+    .setDescription('Backend API Documentation')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

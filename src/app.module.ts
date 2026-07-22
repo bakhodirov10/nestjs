@@ -7,6 +7,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { StudentModule } from './student/student.module';
+import { CourseModule } from './course/course.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { join } from 'path';
     ProductsModule,
     BooksModule,
     AuthModule,
+    StudentModule,
+    CourseModule,
   ],
 })
 export class AppModule {}

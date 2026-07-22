@@ -14,27 +14,16 @@ import { RegisterUserDto } from './Dto/register.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { QueryDto } from './Dto/query.dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getUsers(
-    @Query('search')
-    search?: string,
-    @Query('minAge')
-    minAge?: string,
-    @Query('maxAge')
-    maxAge?: string,
-    @Query('sort')
-    sort?: string,
-    @Query('page')
-    page?: string,
-    @Query('limit')
-    limit?: string
-  ) {
-    return this.usersService.getusers(search, minAge, maxAge, sort, page, limit);
+  getUsers(@Query() query: QueryDto) {
+    return this.usersService.getusers(query);
   }
 
   @Get(':id')
@@ -42,7 +31,10 @@ export class UsersController {
     return this.usersService.getUser(Number(id));
   }
 
-  @Post()
+  @Post('register')
+  @ApiOperation({
+    summary: 'Register new User',
+  })
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({

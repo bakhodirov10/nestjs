@@ -12,11 +12,24 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  age      Int
+  password String
+  image    String?
+  role     Role    @default(USER)
+  products Product[]
+}
+
 model Product {
-  id Int @id @default(autoincrement())
-  title String
-  price Float
-  image String?
+  id         Int     @id @default(autoincrement())
+  title      String
+  price      Float
+  image      String?
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id])
 }
 
 enum Role {
@@ -24,18 +37,23 @@ enum Role {
   USER
 }
 
-model User {
-  id       Int    @id @default(autoincrement())
-  name    String
-  email    String @unique
-  age      Int
-  password String
-  image String?
-  role Role @default(USER)
-}
-
 model Book {
-  id Int @id @default(autoincrement())
+  id    Int    @id @default(autoincrement())
   title String
   pages Float
+}
+
+model Course {
+  id Int @id @default(autoincrement())
+  class String
+  studentId Int?
+  student Student? @relation(fields: [studentId], references: [id])
+}
+
+model Student {
+  id Int @id @default(autoincrement())
+  name String
+  age Int
+  courseId Int?
+  courses Course []
 }

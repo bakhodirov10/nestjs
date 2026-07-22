@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
@@ -17,15 +18,27 @@ export class CreateProductDto {
   @Matches(/^(?!\d+$).+/, {
     message: 'Title cannot consist of numbers only',
   })
+  @ApiProperty({
+    example: 'MacBook Pro',
+    description: 'Product title',
+  })
   title!: string;
 
   @IsNumber({}, { message: 'Faqat son qabul qilinadi!' })
-  @Type(() => Number) 
+  @Type(() => Number)
   @Min(1, { message: 'Minimum narx 1 dollar!' })
   @IsPositive({ message: "Narx manfiy son bo'la olmaydi!" })
+  @ApiProperty({
+    example: '500',
+    description: 'Product price',
+  })
   price!: number;
 
   @IsOptional()
   @IsString()
-  image?: string
+  @ApiProperty({
+    example: 'image',
+    description: 'Product image or file',
+  })
+  image?: string;
 }

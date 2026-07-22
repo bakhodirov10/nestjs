@@ -2,19 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductDto } from './Dto/CreateProduct.dto';
 import { UpdateProductDto } from './Dto/UpdateProduct.dto';
+import { GetProductDto } from './Dto/QueryProductDto';
 
 @Injectable()
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getProducts(
-    search?: string,
-    maxPrice?: string,
-    minPrice?: string,
-    sort?: string,
-    page?: string,
-    limit?: string,
-  ) {
+  async getProducts(query: GetProductDto) {
+    const { search, maxPrice, minPrice, sort, page, limit } = query;
+
     const currentPage = Number(page) || 1;
     const take = Number(limit) || 5;
     const skip = (currentPage - 1) * take;

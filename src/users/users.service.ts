@@ -8,6 +8,7 @@ import { LoginDto } from './Dto/Login.dto';
 import * as bcrypt from 'bcryptjs';
 import { RegisterUserDto } from './Dto/register.dto';
 import { AuthService } from '../auth/auth.service';
+import { QueryDto } from './Dto/query.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,14 +17,9 @@ export class UsersService {
     private authService: AuthService,
   ) {}
 
-  async getusers(
-    search?: string,
-    minAge?: string,
-    maxAge?: string,
-    sort?: string,
-    page?: string,
-    limit?: string,
-  ) {
+  async getusers(query: QueryDto) {
+    const { search, maxAge, minAge, sort, page, limit } = query;
+
     const currentPage = Number(page) || 1;
     const take = Number(limit) || 5;
     const skip = (currentPage - 1) * take;
@@ -32,7 +28,7 @@ export class UsersService {
       where: {
         name: {
           contains: search,
-          mode: 'insensitive'
+          mode: 'insensitive',
         },
         age: {
           gte: minAge ? Number(minAge) : undefined,
@@ -43,17 +39,16 @@ export class UsersService {
         age: sort === 'asc' ? 'asc' : 'desc',
       },
       skip,
-      take
-    })
-    
-    return this.prisma.user.findMany({
+      take,
       select: {
         id: true,
         name: true,
         email: true,
         age: true,
-      },
+      }
     });
+
+    return users;
   }
 
   async register(body: RegisterUserDto, filename?: string) {
@@ -110,7 +105,7 @@ export class UsersService {
       id: user.id,
       email: user.email,
     });
-    
+
     const { password, ...userWithoutPassword } = user;
 
     return {
