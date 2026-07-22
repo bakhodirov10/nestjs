@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateCourseDto } from './Dto/createCourseDto';
+import { UpdateCourseDto } from './Dto/updateCourseCto';
 
 @Injectable()
 export class CourseService {
@@ -15,13 +17,13 @@ export class CourseService {
     });
   }
 
-  async createCourse(body: any) {
+  async createCourse(body: CreateCourseDto) {
     return this.prisma.course.create({
       data: body,
     });
   }
 
-  async updateCourse(id: number, body: any) {
+  async updateCourse(id: number, body: UpdateCourseDto) {
     return this.prisma.course.update({
       where: { id },
       data: body,
