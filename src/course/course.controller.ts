@@ -28,8 +28,8 @@ export class CourseController {
 
   @Post()
   @ApiResponse({
-  status: 201,
-  description: "Course created successfully"
+    status: 201,
+    description: 'Course created successfully',
   })
   createCourse(@Body() body: CreateCourseDto) {
     return this.courseService.createCourse(body);

@@ -9,7 +9,9 @@ import { JwtService } from '@nestjs/jwt';
 export class JwtAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
+    const request = context
+      .switchToHttp()
+      .getRequest<{ headers: { authorization?: string } }>();
     const authHeader = request.headers.authorization;
     if (!authHeader) {
       throw new UnauthorizedException('Token is missing');

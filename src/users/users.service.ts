@@ -45,13 +45,13 @@ export class UsersService {
         name: true,
         email: true,
         age: true,
-      }
+      },
     });
 
     return users;
   }
 
-  async register(body: RegisterUserDto, filename?: string) {
+  async register(body: RegisterUserDto) {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: body.email },
     });
@@ -106,6 +106,7 @@ export class UsersService {
       email: user.email,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = user;
 
     return {

@@ -7,7 +7,6 @@ import {
   IsNumber,
   Matches,
   Max,
-  isNotEmpty,
 } from 'class-validator';
 
 export class CreateBookDto {

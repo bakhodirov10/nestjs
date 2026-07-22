@@ -1,18 +1,25 @@
-import { IsOptional, IsString, Length, IsNumber, Min, Max } from "class-validator";
+import {
+  IsOptional,
+  IsString,
+  Length,
+  IsNumber,
+  Min,
+  Max,
+} from 'class-validator';
 
 export class UpdateProductDto {
-    @IsOptional()
-    @IsString()
-    @Length(3, 30)
-    title?: string;
+  @IsOptional()
+  @IsString()
+  @Length(3, 30)
+  title?: string;
 
-    @IsOptional()
-    @IsNumber()
-    @Min(1)
-    @Max(100000)
-    price?: number;
+  @IsOptional()
+  @IsNumber()
+  @Min(1)
+  @Max(100000)
+  price?: number;
 
-    @IsOptional()
-    @IsString()
-    image?: string
+  @IsOptional()
+  @IsString()
+  image?: string;
 }

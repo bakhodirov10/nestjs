@@ -39,10 +39,9 @@ export class ProductsController {
 
   @Post()
   @ApiResponse({
-status: 201,
-description: "Product created successfully"
-})
-
+    status: 201,
+    description: 'Product created successfully',
+  })
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({

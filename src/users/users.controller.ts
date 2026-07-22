@@ -50,7 +50,7 @@ export class UsersController {
     @UploadedFile() file: Express.Multer.File,
     @Body() body: RegisterUserDto,
   ) {
-    return this.usersService.register(body, file.filename);
+    return this.usersService.register(body);
   }
 
   @Post('login')

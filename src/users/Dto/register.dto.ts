@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class RegisterUserDto {
   @IsString()
@@ -11,7 +19,7 @@ export class RegisterUserDto {
   name: string;
 
   @IsEmail({}, { message: "Noto'g'ri email formati" })
-  @IsNotEmpty({ message: "Email kiritish majburiy" })
+  @IsNotEmpty({ message: 'Email kiritish majburiy' })
   @ApiProperty({
     example: 'abdulloh@gmail.com',
     description: 'email',
@@ -20,7 +28,7 @@ export class RegisterUserDto {
 
   @IsInt({ message: "Yosh (age) butun son bo'lishi kerak" })
   @Min(1, { message: "Yosh 1 dan kichik bo'lishi mumkin emas" })
-  @IsNotEmpty({ message: "Yosh kiritish majburiy" })
+  @IsNotEmpty({ message: 'Yosh kiritish majburiy' })
   @ApiProperty({
     example: '18',
     description: 'age',
@@ -36,12 +44,11 @@ export class RegisterUserDto {
   })
   password: string;
 
-
   @IsString()
   @IsOptional()
   @ApiProperty({
     example: 'image',
     description: 'Product image or file',
   })
-  image?: string
+  image?: string;
 }

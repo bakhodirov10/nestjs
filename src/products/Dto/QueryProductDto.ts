@@ -4,7 +4,7 @@ import { IsNumberString, IsOptional, IsString } from 'class-validator';
 export class GetProductDto {
   @ApiPropertyOptional({
     example: 'macbook',
-    description: 'Mahsulot nomi bo\'yicha qidiruv',
+    description: "Mahsulot nomi bo'yicha qidiruv",
   })
   @IsOptional()
   @IsString()
@@ -29,7 +29,7 @@ export class GetProductDto {
   @ApiPropertyOptional({
     example: 'asc',
     enum: ['asc', 'desc'],
-    description: 'Narx bo\'yicha saralash tartibi',
+    description: "Narx bo'yicha saralash tartibi",
   })
   @IsOptional()
   @IsString()
