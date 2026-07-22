@@ -10,6 +10,7 @@ import {
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './Dto/createCourseDto';
 import { UpdateCourseDto } from './Dto/updateCourseCto';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('student')
 export class CourseController {
@@ -26,6 +27,10 @@ export class CourseController {
   }
 
   @Post()
+  @ApiResponse({
+  status: 201,
+  description: "Course created successfully"
+  })
   createCourse(@Body() body: CreateCourseDto) {
     return this.courseService.createCourse(body);
   }
